@@ -27,17 +27,19 @@ def click_search_bar(image_file_path):
 	click_on_pixel(search_bar_location)
 	return search_bar_location
 
-def run_process(time, function, function_args):
+def run_process(wait_time, function, function_args):
 	#run function for at most a given time in seconds
 	p = multiprocessing.Process(target = function, name= "function",
 		args = function_args)
 	p.start()
+	print("started")
 	# Wait 10 seconds for foo
-	time.sleep(time)
+	time.sleep(wait_time)
 	# Terminate foo
 	p.terminate()
 	# Cleanup
 	p.join()
+	print("process run: ", function, "(", function_args, ")")
 
 '''
 Based on the size of your screen and where wolframAlpha will open in your
