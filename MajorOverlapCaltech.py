@@ -33,28 +33,25 @@ def assign_inputs(default_dict, argument_names,
             inputs[argument_names[index]] = user_input[index]
         return inputs
 
-# %%
-
 #%%
 class Course:
-    def assign_inputs(default_dict, argument_names, 
-        user_input):
-        inputs = default_dict
-        for index in range(len(user_input)):
-            inputs[argument_names[index]] = user_input[index]
-        return inputs
-
+    
     def __init__(self, **kwargs):
-	#kwargs is a dictionary 
-        argument_names = ("department_number", 
-            "abbreviation", "class_times", "terms_offered",
-            "years_offered")  
-        inputs = assign_inputs({}, argument_names, kwargs)
-        self.inputs = inputs  
-        
-    def add_courses(self, additional_courses):
-        self.courses = np.append(self.courses, 
-            additional_courses)
+	    #kwargs is a dictionary 
+        self.course_name = self.course_name.upper()
+        self.course_name = self.course_name.replace(" ", "_")
+        self.course_name = self.course_name.replace("-", "_")
+        self.course_name = self.course_name.replace(".", "_")
+        self.course_name = self.course_name.replace("/", "_")
+        self.course_name = self.course_name.replace("(", "_")
+        self.course_name = self.course_name.replace(")", "_")
+        self.course_name = self.course_name.replace("__", "_")
+        self.assign_attributes(**kwargs)
+
+    def assign_attributes(self, **kwargs):
+        for key in kwargs:
+            setattr(self, key, kwargs[key])
+
 
 #%%
 
@@ -78,10 +75,24 @@ class Major:
 	    #kwargs is a dictionary 
        self.abbreviation = abbreviation
        self.name = name
-       for key in kwargs:
+       self.assign_attributes(**kwargs)
+
+    def assign_attributes(self, **kwargs):
+        for key in kwargs:
             setattr(self, key, kwargs[key])
 
-    def get_string_from_pdf(self, pdf_file_path):
+class Catalog:
+
+    def __init__(self, file_path, **kwargs):
+        #kwargs is a dictionary 
+        self.file_path = file_path
+        self.assign_attributes(**kwargs)
+
+    def assign_attributes(self, **kwargs):
+        for key in kwargs:
+            setattr(self, key, kwargs[key])
+
+    def get_catalog_string(self, pdf_file_path):
         from PyPDF2 import PdfFileReader
         pdf_file = PdfFileReader(open(pdf_file_path, "rb"))
         page = pdf_file.getPage(0)
@@ -90,7 +101,7 @@ class Major:
         for i in range(total_pages):
             page = pdf_file.getPage(i)
             pdf_complete_text += page.extractText()
-        self.catalog = pdf_complete_text
+        self.complete_text = pdf_complete_text
 
     def read_from_catalog(self, catalog):
         for term in self.terms:
@@ -113,20 +124,29 @@ print(astro.abbreviation, astro.name)
 #print(astro.catalog_complete_text)
 #%%
 
-#%%
-
 '''
-This next codeblock will use TQFRs and the major requirements 
-to create a schedule for a given major.
+This next codeblock will use TQFRs, the schedule, 
+and the major requirements to create a schedule for a given \
+major.
+
 major_array is a numpy array of Major objects (also includes
 minors)
+
+E.g. for how terms will be stored (this is summer 2021): 
+SU2020-21 
 '''
 
 class Schedule:
-    def __init__(self, time_constraints, major_array):
+    def __init__(self, time_constraints, major_array, 
+                    **kwargs):
         self.time_constraints = time_constraints
         self.constraints, self.major_array = (
             time_constraints, major_array)
+        self.assign_attributes(**kwargs)
+
+    def assign_attributes(self, **kwargs):
+        for key in kwargs:
+            setattr(self, key, kwargs[key])
     
     def add_terms(self, additional_terms):
         np.append(self.terms, additional_terms)
@@ -145,6 +165,7 @@ astro_geobio_schedule = Schedule(['2022 Fall', '2022 Spring'],
 print(astro_geobio_schedule.time_constraints)
 for major in astro_geobio_schedule.major_array:
     print(major.name)
+
 #ADD INSTITUTE REQUIREMENTS!!
 # %
 # %%
