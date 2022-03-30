@@ -26,7 +26,6 @@ def function_name(**kwargs):
     inputs = assign_inputs(default_dict, argument_names, 
                        user_input)
 '''
-
 def assign_inputs(default_dict, argument_names, 
         user_input):
         inputs = default_dict
@@ -34,6 +33,7 @@ def assign_inputs(default_dict, argument_names,
             inputs[argument_names[index]] = user_input[index]
         return inputs
 
+# %%
 
 #%%
 class Course:
@@ -46,8 +46,9 @@ class Course:
 
     def __init__(self, **kwargs):
 	#kwargs is a dictionary 
-        argument_names = ("department_number", "name",
-            "class_times", "terms_offered", "years_offered")  
+        argument_names = ("department_number", 
+            "abbreviation", "class_times", "terms_offered",
+            "years_offered")  
         inputs = assign_inputs({}, argument_names, kwargs)
         self.inputs = inputs  
         
@@ -56,36 +57,61 @@ class Course:
             additional_courses)
 
 #%%
-'''
-Each major is an object with the following attributes:
-
-name: string of the name of major
-
-requirements: dictionary of requirements for the major.
-
-required_course: numpy array of all the courses that can 
-be used to satify that specific requirement. 
-'''
 
 class Major:
-    def assign_inputs(default_dict, argument_names, 
-        user_input):
-        inputs = default_dict
-        for index in range(len(user_input)):
-            inputs[argument_names[index]] = user_input[index]
-        return inputs
 
-    def __init__(self, **kwargs):
-	#kwargs is a dictionary 
-        argument_names = ("name", "requirements")  
-        inputs = assign_inputs({}, argument_names, kwargs)
-        self.inputs = inputs   
+    '''
+    You can set whatever you want as an attribute! 
+    Only abbreviation and name are required.
+    Some useful optional attributes:
+    
+    catalog_file_path: string that is the file path of 
+        the PDF of the Caltech catalog.
+        
+    courses: list of courses that are offered in the major.
+
+    required_course: numpy array of all the courses that can 
+    be used to satify that specific requirement. 
+    '''
+
+    def __init__(self, abbreviation, name, **kwargs):
+	    #kwargs is a dictionary 
+       self.abbreviation = abbreviation
+       self.name = name
+       for key in kwargs:
+            setattr(self, key, kwargs[key])
+
+    def get_string_from_pdf(self, pdf_file_path):
+        from PyPDF2 import PdfFileReader
+        pdf_file = PdfFileReader(open(pdf_file_path, "rb"))
+        page = pdf_file.getPage(0)
+        pdf_complete_text = ""
+        total_pages = pdf_file.getNumPages()
+        for i in range(total_pages):
+            page = pdf_file.getPage(i)
+            pdf_complete_text += page.extractText()
+        self.catalog = pdf_complete_text
 
     def read_from_catalog(self, catalog):
         for term in self.terms:
             for course in catalog.courses:
                 if course.inputs["terms_offered"] == term.name:
                         term.add_course(course)
+
+    def find_major_name(major_string):
+        major_name_start = major_string.find("Major:")
+        major_name_end = major_string.find("Requirements:")
+        major_name = major_string[major_name_start+7:major_name_end-1]
+        return major_name
+
+astro = Major(abbreviation = 'Ay', name = 'Astrophysics', 
+    catalog_file_path = 'catalogUGinfo.pdf')
+#astro.get_string_from_pdf(astro.catalog_file_path)
+print(astro.abbreviation, astro.name)
+#astro.terms = np.array([Term(name="Fall"), Term(name="Spring")])
+#astro.get_string_from_pdf("catalogUGinfo.pdf")
+#print(astro.catalog_complete_text)
+#%%
 
 #%%
 
@@ -101,25 +127,20 @@ class Schedule:
         self.time_constraints = time_constraints
         self.terms = np.array([])
 
-        for i in range():
+        for i in range(len(time_constraints)):
             self.terms.append(Term(time_constraints))
     
     def add_terms(self, additional_terms):
         np.append(self.terms, additional_terms)
+
+    def assign_classes(term):
     
-    #def assign_classes(term):
-    
-def get_string_from_pdf(pdf_file_path):
-    from PyPDF2 import PdfFileReader
-    pdf_file = PdfFileReader(open(pdf_file_path, "rb"))
-    page = pdf_file.getPage(0)
-    pdf_complete_text = ""
-    total_pages = pdf_file.getNumPages()
-    for i in range(total_pages):
-        page = pdf_file.getPage(i)
-        pdf_complete_text += page.extractText()
-    return pdf_complete_text
+
+#find name of major in the string
+
+
 
 print(get_string_from_pdf("catalogUGinfo.pdf"))
+#ADD INSTITUTE REQUIREMENTS!!
 # %
 # %%
