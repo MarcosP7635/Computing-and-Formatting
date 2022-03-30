@@ -109,10 +109,6 @@ class Schedule:
     
     #def assign_classes(term):
     
-'''
-get string from pdf with python 3
-'''
-
 def get_string_from_pdf(pdf_file_path):
     from PyPDF2 import PdfFileReader
     pdf_file = PdfFileReader(open(pdf_file_path, "rb"))
