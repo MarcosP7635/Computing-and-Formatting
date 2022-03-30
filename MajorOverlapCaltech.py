@@ -108,10 +108,22 @@ class Schedule:
         np.append(self.terms, additional_terms)
     
     #def assign_classes(term):
-
     
 '''
-now I need to get a string from a PDF file to get the required courses for a given major
+get string from pdf with python 3
 '''
- 
+
+def get_string_from_pdf(pdf_file_path):
+    from PyPDF2 import PdfFileReader
+    pdf_file = PdfFileReader(open(pdf_file_path, "rb"))
+    page = pdf_file.getPage(0)
+    pdf_complete_text = ""
+    total_pages = pdf_file.getNumPages()
+    for i in range(total_pages):
+        page = pdf_file.getPage(i)
+        pdf_complete_text += page.extractText()
+    return pdf_complete_text
+
+print(get_string_from_pdf("catalogUGinfo.pdf"))
+# %
 # %%
