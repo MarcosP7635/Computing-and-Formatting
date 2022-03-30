@@ -125,22 +125,26 @@ minors)
 class Schedule:
     def __init__(self, time_constraints, major_array):
         self.time_constraints = time_constraints
-        self.terms = np.array([])
-
-        for i in range(len(time_constraints)):
-            self.terms.append(Term(time_constraints))
+        self.constraints, self.major_array = (
+            time_constraints, major_array)
     
     def add_terms(self, additional_terms):
         np.append(self.terms, additional_terms)
 
     def assign_classes(term):
-    
+        pass
 
 #find name of major in the string
+geobio_name = 'Geobiology'
+geobio = Major(abbreviation = geobio_name, 
+        name = geobio_name, 
+        catalog_file_path = astro.catalog_file_path)
 
-
-
-print(get_string_from_pdf("catalogUGinfo.pdf"))
+astro_geobio_schedule = Schedule(['2022 Fall', '2022 Spring'], 
+     [astro, geobio])
+print(astro_geobio_schedule.time_constraints)
+for major in astro_geobio_schedule.major_array:
+    print(major.name)
 #ADD INSTITUTE REQUIREMENTS!!
 # %
 # %%
