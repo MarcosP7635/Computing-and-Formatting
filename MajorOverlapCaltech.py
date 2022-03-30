@@ -68,24 +68,36 @@ be used to satify that specific requirement.
 '''
 
 class Major:
-    def __init__(self, name, requirements):
-        self.name = str(name)
-        self.requirements = requirements 
+    def assign_inputs(default_dict, argument_names, 
+        user_input):
+        inputs = default_dict
+        for index in range(len(user_input)):
+            inputs[argument_names[index]] = user_input[index]
+        return inputs
 
-nest = np.array((6,7))
-test = np.array((1,2,3,4,5, nest))
-cat = {}
-cat['dog'] = test
-cat['dog'][-1]
+    def __init__(self, **kwargs):
+	#kwargs is a dictionary 
+        argument_names = ("name", "requirements")  
+        inputs = assign_inputs({}, argument_names, kwargs)
+        self.inputs = inputs   
+
+    def read_from_catalog(self, catalog):
+        for term in self.terms:
+            for course in catalog.courses:
+                if course.inputs["terms_offered"] == term.name:
+                        term.add_course(course)
+
 #%%
 
 '''
 This next codeblock will use TQFRs and the major requirements 
 to create a schedule for a given major.
+major_array is a numpy array of Major objects (also includes
+minors)
 '''
 
 class Schedule:
-    def __init__(self, time_constraints):
+    def __init__(self, time_constraints, major_array):
         self.time_constraints = time_constraints
         self.terms = np.array([])
 
@@ -97,4 +109,9 @@ class Schedule:
     
     #def assign_classes(term):
 
+    
+'''
+now I need to get a string from a PDF file to get the required courses for a given major
+'''
+ 
 # %%
