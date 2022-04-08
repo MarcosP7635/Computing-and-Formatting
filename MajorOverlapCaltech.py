@@ -159,13 +159,18 @@ geobio_name = 'Geobiology'
 geobio = Major(abbreviation = geobio_name, 
         name = geobio_name, 
         catalog_file_path = astro.catalog_file_path)
-
+astro = Major("Ay", "Astrophysics")
+geobio = Major("Geobiology", "Geobiology")
 astro_geobio_schedule = Schedule(['2022 Fall', '2022 Spring'], 
      [astro, geobio])
 print(astro_geobio_schedule.time_constraints)
 for major in astro_geobio_schedule.major_array:
     print(major.name)
 
+
+
 #ADD INSTITUTE REQUIREMENTS!!
 # %
+# %%
+astro_geobio_schedule
 # %%
