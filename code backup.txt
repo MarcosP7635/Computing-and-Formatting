@@ -1,0 +1,21 @@
+split1 = catalog.html.split('">')
+split2 = np.array([])
+for substring in split1:
+    split2 = np.append(split2, substring.split('</a>'))
+split2
+
+from string import punctuation
+symbols_for_filtering = set(punctuation)
+def indices_without_symbols(array_of_strings, array_of_symbols):
+    '''
+    Example usage:
+    alphabet = np.array(['a', 'b', 'c', 'd', 'e', 'f', 'g', 'h', 'i', 'j', 'k', 'l', 'm', 
+        'n', 'o', 'p', 'q', 'r', 's', 't', 'u', 'v', 'w', 'x', 'y', 'az'])
+    array_of_letters = ['a', 'z']
+    alphabet[indices_without_symbols(alphabet, array_of_letters)]
+    '''
+    has_symbols = []
+    for string in array_of_strings:
+        has_symbols.append(not any(symbol in string for symbol in array_of_symbols))
+    return has_symbols
+split2[indices_without_symbols(split2, symbols_for_filtering)]
