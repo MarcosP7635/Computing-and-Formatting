@@ -1,0 +1,10 @@
+ Executing task: C:\Users\engin\AppData\Local\Programs\Julia-1.7.2\bin\julia.exe --color=yes --project=C:\Users\engin\.julia\environments\v1.7 c:\Users\engin\Documents\GitHub\Computing-and-Formatting\testingJulia.jl <
+
+nth_fib(40) = 102334155 ran in 0.5799999237060547 seconds
+
+
+C:\Users\engin\Documents\GitHub\Computing-and-Formatting>C:/Users/engin/Documents/pypy3.9-v7.3.9-win64/python.exe c:/Users/engin/Documents/GitHub/Computing-and-Formatting/testingPypy.py
+55
+nth_fibb(40) = 102334155 ran in 1.1886389255523682 seconds
+
+So it appears that Julia is much faster at Python at calling functions and adding integers.

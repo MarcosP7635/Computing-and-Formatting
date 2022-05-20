@@ -21,4 +21,4 @@ def time_function(func, *args):
     string_output += " ran in " + str(t2-t1) + " seconds"
     return string_output
 
-print(time_function(nth_fibb, 10))
+print(time_function(nth_fibb, 40))

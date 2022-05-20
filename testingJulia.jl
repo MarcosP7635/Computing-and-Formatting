@@ -19,4 +19,4 @@ function time_function(f, input)
     return string_output
 end
 
-print(time_function(nth_fib, 100))
+print(time_function(nth_fib, 40))
