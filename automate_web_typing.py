@@ -1,3 +1,4 @@
+from asyncio import subprocess
 import webbrowser
 import multiprocessing
 from pyautogui import *
@@ -5,6 +6,7 @@ from subprocess import Popen, check_call
 from random import *
 import tkinter
 import time
+import pyperclip
 
 def open_tab(url):
 	firefox_path = 'C:/Program Files/Mozilla Firefox/firefox.exe %s'
@@ -19,13 +21,20 @@ def get_random_wait(wait_min, wait_max):
 	random_wait = wait_min + ((wait_max - wait_min) * random())
 	return random_wait
 
-def click_search_bar(image_file_path):
+def click_search_bar(image_file_path, direction = "Left"):
 	#Look for the image on the screen
 	while True:
 		image_center = locateCenterScreen(image_file_path)
 		print("looking for ", image_file_path)
 		if (image_center is not None):
-			search_bar_location = (image_center[0] - 100, image_center[1])
+			if(direction = "Left"):
+				search_bar_location = (image_center[0] - 100, image_center[1])
+			elif(direction = "Right"):
+				search_bar_location = (image_center[0] + 100, image_center[1])
+			elif(direction = "Up"):
+				search_bar_location = (image_center[0], image_center[1] - 100)
+			elif(direction = "Down"):
+				search_bar_location = (image_center[0], image_center[1] + 100)
 			print("Search bar located at coordinates: ", search_bar_location)
 			break
 	click_on_pixel(search_bar_location)
@@ -76,37 +85,47 @@ any input, that is:
 	web_page_search().
 '''
 
-def autofill(**kwargs):
-	#kwargs is a dictionary
-	inputs_dict = {
-		"image_file_path": "C:/Users/engin/Downloads/wolframAlphaEqualSign.PNG",
-		#file path of an image which we will look for to see when the page loads
-		"url": "https://www.wolframalpha.com", #webpage to open
-		"max_loading_time": 5, #seconds
-		"min_wait_to_look_human": 0.25, #seconds
-		"max_wait_to_look_human": 0.5, #seconds
-		"lag_between_button_pushes": 0.1, #seconds
-		}
-	argument_names = ("search_bar", "max_loading_time", "url", "search_term",
-		"min_wait_to_look_human", "max_wait_to_look_human",
-		"lag_between_button_pushes", "image_file_path")
-	for index in range(len(kwargs)):
-		inputs_dict[argument_names[index]] = kwargs[index]
-		#Overwrite defaults with the user input
-	#Click in the middle of the search bar
-	run_process(inputs_dict["max_loading_time"], click_search_bar,
-		inputs_dict["image_file_path"], inputs_dict["url"])
+def autofill(image_file_path = "C:/Users/engin/Downloads/wolframAlphaEqualSign.PNG",
+	        url = "https://www.wolframalpha.com", max_loading_time = 5,
+			min_wait_to_look_human = 0.25, max_wait_to_look_human = 0.5,
+			lag_between_button_pushes = 0.1, **kwargs):
+	'''
+	This function will look for an image that matches the image_file_path then click near it
+	and either type in a specified search term or paste whatever is on the clipboard.
+	'''
+	run_process(max_loading_time, click_search_bar, image_file_path, url)
 	#run function for at most a given time in seconds
 	try:
 	#There can only be a key in the dictionary named string from user input
-		write(inputs_dict["search_term"],
-			interval = random() * inputs_dict["lag_between_button_pushes"])
+		write(search_term, interval = random() * lag_between_button_pushes)
 	except:
 		#just copy and paste :)
 		keyDown('ctrl')
 		press('v')
 		keyUp('ctrl')
 	#wait to search
-	time.sleep(get_random_wait(inputs_dict["min_wait_to_look_human"],
-		inputs_dict["max_wait_to_look_human"]))
+	time.sleep(get_random_wait(min_wait_to_look_human, max_wait_to_look_human))
 	press('Enter')
+
+def get_webpage_text(image_file_path = "C:/Users/engin/Downloads/caltechLogoToClick.PNG",
+	        url = "http://schedules.caltech.edu/WI2020-21.html", 
+			notepad_path = "C:\\Windows\\notepad.exe", 
+			output_path = "C:\\Users\\engin\\Downloads\\output.txt",
+			**kwargs):
+	'''
+	This function will look for an image that matches the image_file_path then click near it
+	and either type in a specified search term or paste whatever is on the clipboard.
+	'''
+	run_process(max_loading_time, click_search_bar, image_file_path, url)
+	#run function for at most a given time in seconds
+	#just copy and paste :)
+	keyDown('ctrl')
+	press('a')
+	press('c')
+	keyUp('ctrl')
+	subprocess.os.system(notepad_path)
+	click_search_bar(image_file_path, "Down")
+	#now we have all the text on the clipboard
+	with open(output_path, "w") as text_file:
+    	text_file.write(pyperclip.paste())
+	#now we will put the clipboard into a string
