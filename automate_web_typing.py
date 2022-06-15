@@ -27,13 +27,13 @@ def click_search_bar(image_file_path, direction = "Left"):
 		image_center = locateCenterScreen(image_file_path)
 		print("looking for ", image_file_path)
 		if (image_center is not None):
-			if(direction = "Left"):
+			if(direction == "Left"):
 				search_bar_location = (image_center[0] - 100, image_center[1])
-			elif(direction = "Right"):
+			elif(direction == "Right"):
 				search_bar_location = (image_center[0] + 100, image_center[1])
-			elif(direction = "Up"):
+			elif(direction == "Up"):
 				search_bar_location = (image_center[0], image_center[1] - 100)
-			elif(direction = "Down"):
+			elif(direction == "Down"):
 				search_bar_location = (image_center[0], image_center[1] + 100)
 			print("Search bar located at coordinates: ", search_bar_location)
 			break
@@ -127,5 +127,5 @@ def get_webpage_text(image_file_path = "C:/Users/engin/Downloads/caltechLogoToCl
 	click_search_bar(image_file_path, "Down")
 	#now we have all the text on the clipboard
 	with open(output_path, "w") as text_file:
-    	text_file.write(pyperclip.paste())
+		text_file.write(pyperclip.paste())
 	#now we will put the clipboard into a string

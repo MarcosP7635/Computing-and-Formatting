@@ -1,0 +1,5 @@
+heroku create testing7635 --buildpack https://github.com/Optomatica/heroku-buildpack-julia.git
+git remote add heroku https://git.heroku.com/juliacon-demo.git
+git push heroku main
+heroku open -a $HEROKU_APP_NAME
+juliacon-demo.herokuapp.com/user/JuliaCon
