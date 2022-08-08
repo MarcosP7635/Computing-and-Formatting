@@ -17,5 +17,6 @@ def load_data(nrows):
     #data.rename(lowercase, axis='columns', inplace=True)
     return data
 
+
 for key in load_data(10).keys():
     print(key + "\n")

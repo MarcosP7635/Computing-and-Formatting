@@ -21,20 +21,20 @@ def get_random_wait(wait_min, wait_max):
 	random_wait = wait_min + ((wait_max - wait_min) * random())
 	return random_wait
 
-def click_search_bar(image_file_path, direction = "Left"):
+def click_search_bar(image_file_path, direction = "Left", distance = 100):
 	#Look for the image on the screen
 	while True:
-		image_center = locateCenterScreen(image_file_path)
+		image_center = locateCenterOnScreen(image_file_path)
 		print("looking for ", image_file_path)
 		if (image_center is not None):
 			if(direction == "Left"):
-				search_bar_location = (image_center[0] - 100, image_center[1])
+				search_bar_location = (image_center[0] - distance, image_center[1])
 			elif(direction == "Right"):
-				search_bar_location = (image_center[0] + 100, image_center[1])
+				search_bar_location = (image_center[0] + distance, image_center[1])
 			elif(direction == "Up"):
-				search_bar_location = (image_center[0], image_center[1] - 100)
+				search_bar_location = (image_center[0], image_center[1] - distance)
 			elif(direction == "Down"):
-				search_bar_location = (image_center[0], image_center[1] + 100)
+				search_bar_location = (image_center[0], image_center[1] + distance)
 			print("Search bar located at coordinates: ", search_bar_location)
 			break
 	click_on_pixel(search_bar_location)
@@ -106,6 +106,7 @@ def autofill(image_file_path = "C:/Users/engin/Downloads/wolframAlphaEqualSign.P
 	#wait to search
 	time.sleep(get_random_wait(min_wait_to_look_human, max_wait_to_look_human))
 	press('Enter')
+	
 
 def get_webpage_text(image_file_path = "C:/Users/engin/Downloads/caltechLogoToClick.PNG",
 	        url = "http://schedules.caltech.edu/WI2020-21.html", 
