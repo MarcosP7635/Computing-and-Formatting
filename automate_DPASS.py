@@ -7,6 +7,7 @@ if __name__ == '__main__':
     pool = Pool(processes=2)              # start 4 worker processes
     result = pool.apply_async(os.system, program_path)
     result2 = pool.apply_async(find_image_centers, (images_dir, output_dir))
+    #It is important that there is no need to write over any existing files!
     result2.get()    #run the function asynchronously
     result.get()                  
 

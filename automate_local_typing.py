@@ -36,15 +36,17 @@ def click_button_known_location(image_center, direction = "Left", distance = 100
         return 0
     return 1
 
-def find_image_centers(images_dir, output_dir):
+def find_image_centers(images_dir, output_dir, targets = list(range(1,93)), 
+                        projectiles = list(range(1,93))):
     image_centers = {}
     while True:
         for image_file in os.listdir(images_dir):
             image_centers[image_file] = locateCenterOnScreen(images_dir + "\\" + image_file)
         if None not in image_centers.values():
             break
-    enter_inputs(output_dir, image_centers)
-    return image_centers
+    confirmations = [[enter_inputs(output_dir, image_centers, target, projectile)
+                        for target in targets] for projectile in projectiles]
+    return confirmations, image_centers
 
 def enter_inputs(output_dir, image_centers, target = 1, projectile = 1):
     click_button_known_location(image_centers["projectile_image.PNG"],
@@ -60,6 +62,8 @@ def enter_inputs(output_dir, image_centers, target = 1, projectile = 1):
     press('s')
     keyUp('ctrl')
     time.sleep(.1)
-    write(output_dir + "\\" + str(target) + " " + str(projectile) + " raw_output")
+    file_name = output_dir + "\\" + str(projectile) + "_" + str(target) + "raw_output"
+    write(file_name)
+    press('Enter')
     press('Enter')
     return 0
