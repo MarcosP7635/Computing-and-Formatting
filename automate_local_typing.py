@@ -1,3 +1,4 @@
+from multiprocessing import Process, freeze_support, Pool
 from asyncio import subprocess
 from email.mime import image
 import multiprocessing
@@ -36,8 +37,8 @@ def click_button_known_location(image_center, direction = "Left", distance = 100
         return 0
     return 1
 
-def find_image_centers(images_dir, output_dir, targets = list(range(1,93)), 
-                        projectiles = list(range(1,93))):
+def find_image_centers(images_dir, output_dir, targets = list(range(1,3)), 
+                        projectiles = list(range(1,3))):
     image_centers = {}
     while True:
         for image_file in os.listdir(images_dir):
@@ -48,7 +49,15 @@ def find_image_centers(images_dir, output_dir, targets = list(range(1,93)),
                         for target in targets] for projectile in projectiles]
     return confirmations, image_centers
 
-def enter_inputs(output_dir, image_centers, target = 1, projectile = 1):
+def exit_save_window(x_button_path =  "C:\\Users\\engin\\Downloads\\x_button.png"):
+    while True:
+        x_button = locateCenterOnScreen(x_button_path)
+        if x_button is not None and not x_button == (None, None):
+            click(x_button[0] + 30, x_button[1] - 5)
+            return 0
+
+def enter_inputs(output_dir, image_centers, target = 1, projectile = 1, 
+        x_button_path =  "C:\\Users\\engin\\Downloads\\x_button.png"):
     click_button_known_location(image_centers["projectile_image.PNG"],
                     direction = "Right", distance = 150)
     edit_field(str(projectile))
@@ -62,8 +71,13 @@ def enter_inputs(output_dir, image_centers, target = 1, projectile = 1):
     press('s')
     keyUp('ctrl')
     time.sleep(.1)
-    file_name = output_dir + "\\" + str(projectile) + "_" + str(target) + "raw_output"
+    file_name = output_dir + "\\" + str(projectile) + "_" + str(target) + "_raw_output"
     write(file_name)
     press('Enter')
+    #press left arrow key
+    press('left')     
     press('Enter')
+    #click button to exit program but take less than 5 seconds to do so
+    exit_save_window(x_button_path)
     return 0
+
