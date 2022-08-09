@@ -2,7 +2,6 @@ from asyncio import subprocess
 import multiprocessing
 from pyautogui import *
 from subprocess import Popen, check_call
-from random import *
 import tkinter
 import time
 import pyperclip
@@ -18,28 +17,30 @@ def edit_field(search_term):
 	keyUp('ctrl')
 	write(search_term)
 
-def enter_inputs(images_dir, output_dir):
-	edit_field("1")
-	click_button(images_dir + "\\target_image.PNG",
-					direction = "Right", distance = 150)
-	edit_field("1")
-	time.sleep(.5)
-	click_button(images_dir + "\\raw_output_image.PNG", 
-					direction = "Right", distance = 225)
-	time.sleep(.5)
-	keyDown('ctrl')
-	press('s')
-	keyUp('ctrl')
-	time.sleep(.5)
-	write(output_dir + "\\H H")
-	press('Enter')
+def enter_inputs(images_dir, output_dir, program_path, target = 1, projectile = 1):
+    os.system(program_path)
+    click_button(images_dir + "\\projectile_image.PNG",
+                    direction = "Right", distance = 150)
+    edit_field(str(projectile))
+    click_button(images_dir + "\\target_image.PNG",
+                    direction = "Right", distance = 150)
+    edit_field(str(target))
+    time.sleep(.5)
+    click_button(images_dir + "\\raw_output_image.PNG", 
+                    direction = "Right", distance = 225)
+    time.sleep(.5)
+    keyDown('ctrl')
+    press('s')
+    keyUp('ctrl')
+    time.sleep(.5)
+    write(output_dir + "\\" + str(target) + " " + str(projectile))
+    press('Enter')
 
-def run_local_process(program_path, wait_time, function, function_args):
+def run_local_process(wait_time, function, function_args):
 	#run function for at most a given time in seconds
+    multiprocessing.freeze_support()
     p = multiprocessing.Process(target = function, name= "function",
         args = function_args)
-    print("Opening program")
-    os.system(program_path)
     p.start()
     print("started the loop")
     # Wait 10 seconds for foo
@@ -77,7 +78,7 @@ def click_button(image_file_path, direction = "Left", distance = 100):
 def collect_data(program_path = "C:\\Users\\engin\\Downloads\\DPASS2106\\DPASS2106\\DPASS.exe", 
 		output_dir = "C:\\Users\\engin\\Documents\\GitHub\\Energy\\ImportedData\\DPASS_Output",
 		images_dir = "C:\\Users\engin\\Downloads\\DPASS_icons",
-		max_loading_time = 5):
-    run_local_process(program_path, max_loading_time, click_button, 
-				(images_dir + "\\projectile_image.PNG", "Right", 150))
-    enter_inputs(images_dir, output_dir)
+		wait_time = 15):
+    run_local_process(wait_time = wait_time, function = enter_inputs, 
+                    function_args= (images_dir, output_dir, program_path))
+
