@@ -37,8 +37,8 @@ def click_button_known_location(image_center, direction = "Left", distance = 100
         return 0
     return 1
 
-def find_image_centers(images_dir, output_dir, targets = list(range(1,3)), 
-                        projectiles = list(range(1,3))):
+def find_image_centers(images_dir, output_dir, targets = list(range(1,93)), 
+                        projectiles = list(range(1,93))):
     image_centers = {}
     while True:
         for image_file in os.listdir(images_dir):

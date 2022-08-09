@@ -1,3 +1,6 @@
+'''
+Note that this must be executed from the same directory as the DPASS files.
+'''
 from automate_local_typing import *
 if __name__ == '__main__':
     output_dir = "C:\\Users\\engin\\Documents\\GitHub\\Energy\\ImportedData\\DPASS_Output"
