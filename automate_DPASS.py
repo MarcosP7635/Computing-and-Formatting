@@ -1,11 +1,13 @@
 from multiprocessing import Process, freeze_support, Pool
 from automate_local_typing import *
 if __name__ == '__main__':
+    wait_time = 60
+    output_dir = "C:\\Users\\engin\\Documents\\GitHub\\Energy\\ImportedData\\DPASS_Output"
+    images_dir = "C:\\Users\engin\\Downloads\\DPASS_icons"
+    program_path = ["C:\\Users\\engin\\Downloads\\DPASS2106\\DPASS2106\\DPASS.exe"]
     pool = Pool(processes=2)              # start 4 worker processes
-    collect_data()
+    result = pool.apply_async(os.system, program_path)
+    result2 = pool.apply_async(enter_inputs, (images_dir, output_dir))
+    result2.get(timeout= wait_time)    #run the function for at most a given time in seconds
+    result.get()                  
 
-if __name__ == '__main__':
-    pool = Pool(processes=4)              # start 4 worker processes
-    result = pool.apply_async(f, [10])    # evaluate "f(10)" asynchronously
-    print result.get(timeout=1)           # prints "100" unless your computer is *very* slow
-    print pool.map(f, range(10))          # prints "[0, 1, 4,..., 81]"

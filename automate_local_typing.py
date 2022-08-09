@@ -17,10 +17,7 @@ def edit_field(search_term):
 	keyUp('ctrl')
 	write(search_term)
 
-def enter_inputs(images_dir, output_dir, program_path, target = 1, projectile = 1):
-    os.system(program_path)
-    click_button(images_dir + "\\projectile_image.PNG",
-                    direction = "Right", distance = 150)
+def enter_inputs(images_dir, output_dir, target = 1, projectile = 1):
     edit_field(str(projectile))
     click_button(images_dir + "\\target_image.PNG",
                     direction = "Right", distance = 150)
@@ -35,6 +32,7 @@ def enter_inputs(images_dir, output_dir, program_path, target = 1, projectile = 
     time.sleep(.5)
     write(output_dir + "\\" + str(target) + " " + str(projectile))
     press('Enter')
+    return 0
 
 def run_local_process(wait_time, function, function_args):
 	#run function for at most a given time in seconds
@@ -75,10 +73,15 @@ def click_button(image_file_path, direction = "Left", distance = 100):
 	click_on_pixel(search_bar_location)
 	return search_bar_location
 
-def collect_data(program_path = "C:\\Users\\engin\\Downloads\\DPASS2106\\DPASS2106\\DPASS.exe", 
+def collect_data( 
 		output_dir = "C:\\Users\\engin\\Documents\\GitHub\\Energy\\ImportedData\\DPASS_Output",
 		images_dir = "C:\\Users\engin\\Downloads\\DPASS_icons",
 		wait_time = 15):
     run_local_process(wait_time = wait_time, function = enter_inputs, 
-                    function_args= (images_dir, output_dir, program_path))
+                    function_args= (images_dir, output_dir))
 
+def find_image_centers(images_dir):
+    image_centers = {}
+    for image_file in os.listdir(images_dir):
+        image_centers[image_file] = locateCenterOnScreen(images_dir + "\\" + image_file)
+    return image_centers
