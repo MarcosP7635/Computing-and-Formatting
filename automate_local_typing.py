@@ -38,14 +38,23 @@ def click_button_known_location(image_center, direction = "Left", distance = 100
     return 1
 
 def find_image_centers(images_dir, output_dir, targets = list(range(1,93)), 
-                        projectiles = list(range(1,93))):
+                        projectiles = list(range(1,93)), interpolate = True):
     image_centers = {}
     while True:
         for image_file in os.listdir(images_dir):
             image_centers[image_file] = locateCenterOnScreen(images_dir + "\\" + image_file)
         if None not in image_centers.values():
             break
-    confirmations = [[enter_inputs(output_dir, image_centers, target, projectile)
+    #now to change to different output units
+    click_button_known_location(image_centers["output_units_image.PNG"],
+                    direction = "Right", distance = 100)
+    click_button_known_location(image_centers["output_units_image.PNG"],
+                    direction = "Right", distance = 100)
+    if interpolate:
+        click_button_known_location(image_centers["min_energy.PNG"],
+                        direction = "Right", distance = 150)
+        edit_field("0.001")
+    confirmations = [[enter_inputs(output_dir, image_centers, target, projectile, True)
                         for target in targets] for projectile in projectiles]
     return confirmations, image_centers
 
@@ -57,21 +66,25 @@ def exit_save_window(x_button_path =  "C:\\Users\\engin\\Downloads\\x_button.png
             return 0
 
 def enter_inputs(output_dir, image_centers, target = 1, projectile = 1, 
-        x_button_path =  "C:\\Users\\engin\\Downloads\\x_button.png"):
+       interpolate = False, x_button_path =  "C:\\Users\\engin\\Downloads\\x_button.png"):
     click_button_known_location(image_centers["projectile_image.PNG"],
                     direction = "Right", distance = 150)
     edit_field(str(projectile))
     click_button_known_location(image_centers["target_image.PNG"],
                     direction = "Right", distance = 150)
     edit_field(str(target))
-    click_button_known_location(image_centers["raw_output_image.PNG"],
-                    direction = "Right", distance = 225)
+    if interpolate:
+        s_0 = "spline"
+    else:
+        s_0 = "raw" 
+    click_button_known_location(image_centers[s_0 + "_output_image.PNG"],
+                        direction = "Right", distance = 225)
     time.sleep(.1)
     keyDown('ctrl')
     press('s')
     keyUp('ctrl')
     time.sleep(.1)
-    file_name = output_dir + "\\" + str(projectile) + "_" + str(target) + "_raw_output"
+    file_name = output_dir + "\\" + str(projectile) + "_" + str(target) + "_" + s_0 + "_output"
     write(file_name)
     press('Enter')
     #press left arrow key
