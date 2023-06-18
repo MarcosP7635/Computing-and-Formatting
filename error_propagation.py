@@ -57,8 +57,8 @@ def power (dict, exponent):
     best_est = np.power(keys, exponent)
     uncertainty = np.abs(best_est) * exponent * values / np.abs(keys)
     return ("best estimate(s): ", best_est, "\n uncertainties: ", uncertainty)
-def general_common_values(expectation_values, uncertainties, fun):
-    #can only take up to 26 inputs
+def general_with_arrays(expectation_values, uncertainties, fun, print_fun=False):
+    #can only take up to 26 inputs, but allows different inputs to have the same expectation value
     #its output is of the form (exact uncertainty, maximum uncertainty)
     #the input is an array of dictionaries, where each input gets its own dictionary
     #the keys are the expectation value and the values are the uncertainty (standard deviation)
@@ -71,7 +71,8 @@ def general_common_values(expectation_values, uncertainties, fun):
         #print(sum_squares)
     lam_og = lambdify(symbol_list[0:len(keys)], fun)
     best_est = lam_og(*keys)
-    print(fun)
+    if print_fun:
+        print(fun)
     uncertainty = math.sqrt(sum_squares)
     return (best_est, uncertainty)
 
