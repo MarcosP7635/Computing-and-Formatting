@@ -66,7 +66,8 @@ def exit_save_window(x_button_path =  "C:\\Users\\engin\\Downloads\\x_button.png
             return 0
 
 def enter_inputs(output_dir, image_centers, target = 1, projectile = 1, 
-       interpolate = False, x_button_path =  "C:\\Users\\engin\\Downloads\\x_button.png"):
+    interpolate = False, x_button_path =  "C:\\Users\\engin\\Downloads\\x_button.png"):
+
     click_button_known_location(image_centers["projectile_image.PNG"],
                     direction = "Right", distance = 150)
     edit_field(str(projectile))
