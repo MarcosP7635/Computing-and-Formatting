@@ -2,34 +2,31 @@ from pyautogui import *
 from time import sleep
 import random
 #click_on_pixel([100, 300])
-def find_and_click_image_center(image_path, max_attempts = 1):
+def find_and_click_image_center(image_path):
     image_centers = {}
-    attempt = 1
-    successful = False
-    while not successful and attempt < max_attempts + 1:
-        print("Attempt " + str(attempt))
-        try:
-            image_centers[image_path] = locateCenterOnScreen(image_path)
-            successful = True
-        except:
-            attempt += 1
+    image_centers[image_path] = locateCenterOnScreen(image_path)
+    click(image_centers[image_path].x , image_centers[image_path].y)
     print(image_centers)
-    #now to change to different output units
-    if successful:
-        click(image_centers[image_path].x , image_centers[image_path].y)
-        print([image_centers[image_path].x, image_centers[image_path].y])
-    else:
-        print("Images not found")
     return image_centers
 
-def send_email(commands, image_path):
+def send_email(commands, image_path, max_attempts = 10):
     for command in commands:
         press(command)
         sleep(random.random())
     hotkey("ctrl", "shift", "5")
-    return find_and_click_image_center(image_path)
+    for i in range(max_attempts):
+        try:
+            #find_and_click_image_center(image_path)
+            click([374, 807])
+            sleep(random.random() + 1)
+            moveTo([500, 900])
+            break
+        except:
+            print("Image not found on attempt " + str(i))
+            return "Image not found"
 
-for i in range(10):
+click([500, 900]) #depends on the layout of the displays and windows while running
+for i in range(50):
     send_email(commands = ["esc", "down", "enter"],
                image_path = "/home/marcos/Pictures/email_backup_buttons/send_button.png")
 
