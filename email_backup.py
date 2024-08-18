@@ -2,7 +2,7 @@ from pyautogui import *
 from time import sleep
 import random
 
-def send_email(commands, image_path, max_attempts = 10):
+def send_email(commands):
     for command in commands:
         sleep(random.random() + 1)
         press(command)
@@ -12,9 +12,8 @@ def send_email(commands, image_path, max_attempts = 10):
     hotkey("ctrl", "enter")
 
 click([500, 900]) #depends on the layout of the displays and windows while running
-for i in range(50):
-    send_email(commands = ["esc", "down", "enter"],
-               image_path = "/home/marcos/Pictures/email_backup_buttons/send.png")
+for i in range(100):
+    send_email(commands = ["esc", "down", "enter"])
 
 
 '''
