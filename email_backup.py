@@ -12,7 +12,7 @@ def send_email(commands):
     hotkey("ctrl", "enter")
 
 click([500, 900]) #depends on the layout of the displays and windows while running
-for i in range(100):
+for i in range(2000):
     send_email(commands = ["esc", "down", "enter"])
 
 
