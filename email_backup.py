@@ -1,34 +1,20 @@
 from pyautogui import *
 from time import sleep
 import random
-#click_on_pixel([100, 300])
-def find_and_click_image_center(image_path):
-    image_centers = {}
-    image_centers[image_path] = locateCenterOnScreen(image_path)
-    click(image_centers[image_path].x , image_centers[image_path].y)
-    print(image_centers)
-    return image_centers
 
 def send_email(commands, image_path, max_attempts = 10):
     for command in commands:
+        sleep(random.random() + 1)
         press(command)
-        sleep(random.random())
+        sleep(random.random() + 1)
     hotkey("ctrl", "shift", "5")
-    for i in range(max_attempts):
-        try:
-            #find_and_click_image_center(image_path)
-            click([374, 807])
-            sleep(random.random() + 1)
-            moveTo([500, 900])
-            break
-        except:
-            print("Image not found on attempt " + str(i))
-            return "Image not found"
+    sleep(random.random() + 1)
+    hotkey("ctrl", "enter")
 
 click([500, 900]) #depends on the layout of the displays and windows while running
 for i in range(50):
     send_email(commands = ["esc", "down", "enter"],
-               image_path = "/home/marcos/Pictures/email_backup_buttons/send_button.png")
+               image_path = "/home/marcos/Pictures/email_backup_buttons/send.png")
 
 
 '''
