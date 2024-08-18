@@ -1,35 +1,38 @@
 from pyautogui import *
-
+from time import sleep
+import random
 #click_on_pixel([100, 300])
-def find_image_centers_email(images_dir, max_attempts = 10):
+def find_and_click_image_center(image_path, max_attempts = 1):
     image_centers = {}
-    print("hi")
-    attempt = 0
+    attempt = 1
     successful = False
-    while not successful and attempt < max_attempts:
+    while not successful and attempt < max_attempts + 1:
         print("Attempt " + str(attempt))
-        for image_file in os.listdir(images_dir):
-            path = images_dir + "/" + image_file
-            print(path)
         try:
-            image_centers[image_file] = locateCenterOnScreen(path)
+            image_centers[image_path] = locateCenterOnScreen(image_path)
             successful = True
         except:
             attempt += 1
     print(image_centers)
     #now to change to different output units
     if successful:
-        for image_file in os.listdir(images_dir):
-            moveTo(image_centers[image_file].x , image_centers[image_file].y)
-            click()
-            click(image_centers[image_file].x , image_centers[image_file].y)
-            print([image_centers[image_file].x, image_centers[image_file].y])
+        click(image_centers[image_path].x , image_centers[image_path].y)
+        print([image_centers[image_path].x, image_centers[image_path].y])
     else:
         print("Images not found")
     return image_centers
 
-images_dir = "/home/marcos/Pictures/examples" #"/home/marcos/Pictures/email_backup_buttons"
-find_image_centers_email(images_dir)
+def send_email(commands, image_path):
+    for command in commands:
+        press(command)
+        sleep(random.random())
+    hotkey("ctrl", "shift", "5")
+    return find_and_click_image_center(image_path)
+
+for i in range(10):
+    send_email(commands = ["esc", "down", "enter"],
+               image_path = "/home/marcos/Pictures/email_backup_buttons/send_button.png")
+
 
 '''
 https://pyautogui.readthedocs.io/en/latest/keyboard.html
