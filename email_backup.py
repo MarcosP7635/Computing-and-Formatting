@@ -2,18 +2,35 @@ from pyautogui import *
 from time import sleep
 import random
 
-def send_email(commands):
-    for command in commands:
-        sleep(random.random() + 1)
-        press(command)
-        sleep(random.random() + 1)
-    hotkey("ctrl", "shift", "5")
-    sleep(random.random() + 1)
-    hotkey("ctrl", "enter")
+def find_and_click_image_center(image_path):
+    image_centers = {}
+    image_centers[image_path] = locateCenterOnScreen(image_path)
+    click(image_centers[image_path].x , image_centers[image_path].y)
+    print(image_centers)
+    return image_centers
 
+def send_email(commands, image_path):
+    for command in commands:
+        sleep(random.random() + 1.5)
+        press(command)
+        sleep(random.random() + 1.5)
+    hotkey("ctrl", "shift", "5")
+    sleep(random.random() + 1.5)
+    hotkey("ctrl", "enter")
+    scroll(1000) 
+    try:
+        click()
+        find_and_click_image_center(image_path)
+    except:
+        press("esc")
+        sleep(random.random() + 1.5)
+        press("esc")
+    sleep(random.random() + 1.5)
 click([500, 900]) #depends on the layout of the displays and windows while running
-for i in range(2000):
-    send_email(commands = ["esc", "down", "enter"])
+moveTo([300, 2000])
+for i in range(10000):
+    send_email(commands = ["esc", "esc", "down", "enter"], image_path = 
+    	"/home/marcos/Pictures/email_backup_buttons/x.png")
 
 
 '''
